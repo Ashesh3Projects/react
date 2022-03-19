@@ -18,7 +18,7 @@ function Header(props: { title: string; btnClickCB: () => void }) {
 			<div className="p-3"></div>
 			<div>
 				<input
-					type="submit"
+					type="button"
 					value="Enter"
 					onClick={props.btnClickCB}
 					className="cursor-pointer w-full flex bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg justify-center"
