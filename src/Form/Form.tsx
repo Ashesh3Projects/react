@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { FormDetails } from "./types";
+import { FormDetails } from "../types";
+import Field from "./Field";
+import { getAllForms } from "./utils";
 
 function Form(props: {
 	action: string;
@@ -29,29 +31,20 @@ function Form(props: {
 	};
 
 	const setFieldValue = (id: number, value: string) => {
-		setFormState(
-			state.map((field) => {
-				if (field.id === id) {
-					field.value = value;
-				}
-				return field;
-			})
-		);
+		let updatedFormData = state.map((field) => {
+			if (field.id === id) {
+				return { ...field, value };
+			}
+			return field;
+		});
+		setFormState(updatedFormData);
 	};
 
 	const clearAllFields = () => {
-		setFormState(
-			state.map((field) => {
-				field.value = "";
-				return field;
-			})
-		);
-	};
-
-	const getAllForms = () => {
-		return localStorage.getItem("forms")
-			? JSON.parse(localStorage.getItem("forms") || "[]")
-			: [];
+		let blankedFormData = state.map((field) => {
+			return { ...field, value: "" };
+		});
+		setFormState(blankedFormData);
 	};
 
 	const createForm = useCallback(() => {
@@ -100,31 +93,12 @@ function Form(props: {
 				method="{props.method}"
 			>
 				{state.map((field) => (
-					<div key={field.id} className="pb-2">
-						<label
-							htmlFor={field.label}
-							className="pb-2 font-semibold text-sm"
-						>
-							{field.label}
-						</label>
-						<div className="flex gap-2">
-							<input
-								type={field.type}
-								id={field.label}
-								value={field.value}
-								onChange={(e) =>
-									setFieldValue(field.id, e.target.value)
-								}
-								className="border-2 border-gray-200 rounded-lg p-2 w-full"
-							/>
-							<input
-								type="button"
-								className="cursor-pointer font-bold bg-purple-500 hover:bg-purple-700 text-white rounded-lg px-3"
-								onClick={() => removeField(field.id)}
-								value="Remove"
-							/>
-						</div>
-					</div>
+					<Field
+						field={field}
+						removeField={removeField}
+						setFieldValue={setFieldValue}
+						key={field.id}
+					/>
 				))}
 				<div className="flex gap-2 border-2 border-gray-200 rounded-lg p-2 my-2">
 					<input

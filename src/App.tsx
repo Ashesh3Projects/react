@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Header from "./Header";
 import Container from "./Container";
-import FormList from "./FormList";
+import FormList from "./Form/List";
 
 function App() {
 	const [state, setState] = useState("HOME");
