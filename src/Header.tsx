@@ -1,7 +1,8 @@
+import { Link } from "raviger";
 import React from "react";
 import logo from "./logo.svg";
 
-function Header(props: { title: string; btnClickCB: () => void }) {
+function Header(props: { title: string }) {
 	return (
 		<>
 			<div className="flex gap-2 center">
@@ -17,12 +18,12 @@ function Header(props: { title: string; btnClickCB: () => void }) {
 			</div>
 			<div className="p-3"></div>
 			<div>
-				<input
-					type="button"
-					value="Enter"
-					onClick={props.btnClickCB}
+				<Link
+					href="/forms"
 					className="cursor-pointer w-full flex bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg justify-center"
-				/>
+				>
+					Enter
+				</Link>
 			</div>
 		</>
 	);
