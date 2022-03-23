@@ -16,3 +16,8 @@ export interface FormDetails {
 	fields: FormField[];
 	attempts?: QuizAttempt[];
 }
+
+export interface NewField {
+	label: string;
+	type: string;
+}

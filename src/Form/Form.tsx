@@ -1,12 +1,16 @@
 import { Link, navigate } from "raviger";
 import React, { useEffect, useState } from "react";
-import { FormDetails, FormField } from "../types";
+import { FormDetails, FormField, NewField } from "../types";
+import AddField from "./AddField";
 import Field from "./Field";
 import { getFormData, getRandomID, updateFormData } from "./utils";
 
 function Form(props: { formID: number }) {
 	const [formData, setFormData] = useState<FormDetails>();
-	const [newFieldValue, setNewFieldValue] = useState("");
+	const [newFieldData, setNewFieldData] = useState<NewField>({
+		label: "",
+		type: "text",
+	});
 
 	useEffect(() => {
 		let newFormData = getFormData(props.formID);
@@ -21,18 +25,19 @@ function Form(props: { formID: number }) {
 	}, [formData, props.formID]);
 
 	const addField = () => {
-		if (newFieldValue === "" || !formData) return;
+		if (newFieldData.label === "" || !formData) return;
 
 		let updatedFormData: FormDetails = { ...formData };
+
 		updatedFormData.fields.push({
 			id: getRandomID(),
-			label: newFieldValue,
-			type: "text",
+			label: newFieldData.label,
+			type: newFieldData.type,
 			value: "",
 		});
 
 		setFormData(updatedFormData);
-		setNewFieldValue("");
+		setNewFieldData({ label: "", type: "text" });
 	};
 
 	const removeField = (id: number) => {
@@ -57,6 +62,18 @@ function Form(props: { formID: number }) {
 		setFormData({ ...formData, fields: updatedFormData });
 	};
 
+	const setFieldType = (id: number, type: string) => {
+		if (!formData) return;
+
+		let updatedFormData = formData.fields.map((field) => {
+			if (field.id === id) {
+				return { ...field, ...{ type: type, value: "" } };
+			}
+			return field;
+		});
+		setFormData({ ...formData, fields: updatedFormData });
+	};
+
 	const clearAllFields = () => {
 		if (!formData) return;
 		setFormData({ ...formData, fields: [] });
@@ -66,6 +83,14 @@ function Form(props: { formID: number }) {
 		if (!formData) return;
 
 		formData.title = value;
+	};
+
+	const setNewFieldDetail = (type: string, value: string) => {
+		if (type === "type") {
+			setNewFieldData({ ...newFieldData, type: value });
+		} else {
+			setNewFieldData({ ...newFieldData, label: value });
+		}
 	};
 
 	return (
@@ -85,30 +110,15 @@ function Form(props: { formID: number }) {
 						field={field}
 						removeField={removeField}
 						setFieldValue={setFieldValue}
+						setFieldType={setFieldType}
 						key={field.id}
 					/>
 				))}
-				<div className="flex gap-2 border-2 border-gray-200 rounded-lg p-2 my-2">
-					<input
-						type="text"
-						value={newFieldValue}
-						onChange={(e) => setNewFieldValue(e.target.value)}
-						onKeyUp={(e) => {
-							if (e.key === "Enter") {
-								e.preventDefault();
-								addField();
-							}
-						}}
-						className="border-2 border-gray-200 rounded-lg p-2 w-full"
-					/>
-					<input
-						type="button"
-						value="Add Question"
-						onClick={addField}
-						className="cursor-pointer w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg"
-					/>
-				</div>
-
+				<AddField
+					addField={addField}
+					newFieldData={newFieldData}
+					setNewFieldDetail={setNewFieldDetail}
+				/>
 				<div className="p-3"></div>
 				<input
 					type="button"

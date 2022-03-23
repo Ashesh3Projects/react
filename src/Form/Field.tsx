@@ -4,6 +4,7 @@ import { FormField } from "../types";
 function Field(props: {
 	field: FormField;
 	setFieldValue: Function;
+	setFieldType: Function;
 	removeField: Function;
 }) {
 	return (
@@ -16,7 +17,7 @@ function Field(props: {
 			</label> */}
 			<div className="flex gap-2">
 				<input
-					type={props.field.type}
+					type="text"
 					id={props.field.label}
 					value={props.field.label}
 					onChange={(e) =>
@@ -24,6 +25,20 @@ function Field(props: {
 					}
 					className="border-2 border-gray-200 rounded-lg p-2 w-full"
 				/>
+				<select
+					value={props.field.type}
+					className="border-2 border-gray-200 rounded-lg p-2 w-52"
+					onChange={(e) =>
+						props.setFieldType(props.field.id, e.target.value)
+					}
+				>
+					<option value="text">Text</option>
+					<option value="number">Number</option>
+					<option value="email">Email</option>
+					<option value="password">Password</option>
+					<option value="date">Date</option>
+					<option value="time">Time</option>
+				</select>
 				<input
 					type="button"
 					className="cursor-pointer font-bold bg-purple-500 hover:bg-purple-700 text-white rounded-lg px-3"

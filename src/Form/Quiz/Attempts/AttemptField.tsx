@@ -12,7 +12,11 @@ function AttemptField(props: { field: FormField }) {
 			</label>
 			<div className="flex gap-2">
 				<input
-					type={props.field.type}
+					type={
+						props.field.type === "password"
+							? "text"
+							: props.field.type
+					}
 					id={props.field.label}
 					value={props.field.value}
 					disabled={true}

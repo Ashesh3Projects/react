@@ -45,7 +45,26 @@ export function createForm(): FormDetails {
 	let formDetails = {
 		id: getRandomID(),
 		title: "Untitled Form",
-		fields: [],
+		fields: [
+			{
+				id: getRandomID(),
+				label: "Name",
+				type: "text",
+				value: "",
+			},
+			{
+				id: getRandomID(),
+				label: "Email",
+				type: "email",
+				value: "",
+			},
+			{
+				id: getRandomID(),
+				label: "Phone",
+				type: "number",
+				value: "",
+			},
+		],
 	};
 	saveFormsLocalStorage([...allForms, formDetails]);
 	return formDetails;
