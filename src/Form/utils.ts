@@ -1,10 +1,5 @@
+import { EffectCallback, useEffect } from "react";
 import { FormDetails } from "../types";
-
-export function getAllForms(): FormDetails[] {
-	return localStorage.getItem("forms")
-		? JSON.parse(localStorage.getItem("forms") || "[]")
-		: [];
-}
 
 export function saveFormsLocalStorage(forms: FormDetails[]): void {
 	localStorage.setItem("forms", JSON.stringify(forms));
@@ -16,17 +11,20 @@ export function deleteForm(formid: number): FormDetails[] {
 	return forms;
 }
 
-export function getFormsLocalStorage(): FormDetails[] {
+export function getAllForms(): FormDetails[] {
 	const forms = localStorage.getItem("forms");
 	if (forms) {
-		return JSON.parse(forms);
+		return JSON.parse(forms).sort(
+			(first: FormDetails, second: FormDetails) =>
+				first["id"] - second["id"]
+		);
 	}
 	return [];
 }
 
 export function getFormData(formID: number): FormDetails {
 	if (formID !== -1)
-		return getFormsLocalStorage().filter(
+		return getAllForms().filter(
 			(form: FormDetails) => form.id === formID
 		)[0];
 	else return createForm();
@@ -51,4 +49,27 @@ export function createForm(): FormDetails {
 	};
 	saveFormsLocalStorage([...allForms, formDetails]);
 	return formDetails;
+}
+
+export function getQuizAttempts(formID?: number): FormDetails[] {
+	let allQuizAttempts = localStorage.getItem("quizAttempts");
+	if (!allQuizAttempts) return [];
+	let attempts = JSON.parse(allQuizAttempts);
+	if (!formID) return attempts;
+	return attempts.filter((attempt: FormDetails) => attempt.id === formID);
+}
+
+export function saveQuizAttempt(formID: number, formData: FormDetails): void {
+	let allQuizAttempts = getQuizAttempts();
+	allQuizAttempts.push(formData);
+	localStorage.setItem("quizAttempts", JSON.stringify(allQuizAttempts));
+}
+
+export function getFormattedDate(date: Date) {
+	return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+}
+
+export function useEffectOnlyOnce(func: EffectCallback) {
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	useEffect(func, []);
 }

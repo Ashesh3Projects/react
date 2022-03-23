@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 function Search(props: { search: string; setQuery: Function }) {
 	const searchRef = useRef<HTMLInputElement>(null);
@@ -27,11 +27,11 @@ function Search(props: { search: string; setQuery: Function }) {
 				</div>
 				<div className="flex">
 					<button
-						className="bg-purple-500 hover:bg-purple-700 text-white rounded-lg px-3"
+						className="bg-purple-500 hover:bg-purple-700 text-white rounded-lg px-4"
 						type="submit"
 						title="search"
 					>
-						Search
+						&#x1F50E;&#xFE0E;
 					</button>
 				</div>
 			</div>

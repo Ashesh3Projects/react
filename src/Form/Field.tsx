@@ -7,18 +7,18 @@ function Field(props: {
 	removeField: Function;
 }) {
 	return (
-		<div key={props.field.id} className="pb-2">
-			<label
+		<div key={props.field.id} className="pb-4">
+			{/* <label
 				htmlFor={props.field.label}
 				className="pb-2 font-semibold text-sm"
 			>
 				{props.field.label}
-			</label>
+			</label> */}
 			<div className="flex gap-2">
 				<input
 					type={props.field.type}
 					id={props.field.label}
-					value={props.field.value}
+					value={props.field.label}
 					onChange={(e) =>
 						props.setFieldValue(props.field.id, e.target.value)
 					}

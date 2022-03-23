@@ -50,7 +50,7 @@ function Form(props: { formID: number }) {
 
 		let updatedFormData = formData.fields.map((field) => {
 			if (field.id === id) {
-				return { ...field, value };
+				return { ...field, ...{ label: value, value: "" } };
 			}
 			return field;
 		});
@@ -59,11 +59,7 @@ function Form(props: { formID: number }) {
 
 	const clearAllFields = () => {
 		if (!formData) return;
-
-		let blankedFormData = formData.fields.map((field) => {
-			return { ...field, value: "" };
-		});
-		setFormData({ ...formData, fields: blankedFormData });
+		setFormData({ ...formData, fields: [] });
 	};
 
 	const setTitle = (value: string) => {
@@ -105,7 +101,7 @@ function Form(props: { formID: number }) {
 					/>
 					<input
 						type="button"
-						value="Add Field"
+						value="Add Question"
 						onClick={addField}
 						className="cursor-pointer w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg"
 					/>
@@ -113,8 +109,15 @@ function Form(props: { formID: number }) {
 
 				<div className="p-3"></div>
 				<input
-					type="submit"
-					value="Submit"
+					type="button"
+					onClick={(e) => {
+						updateFormData(formData);
+						(e.target as HTMLInputElement).value = "Saved!";
+						setTimeout(() => {
+							(e.target as HTMLInputElement).value = "Save";
+						}, 1000);
+					}}
+					value="Save"
 					className="cursor-pointer w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg"
 				/>
 				<div className="p-2"></div>
@@ -122,7 +125,7 @@ function Form(props: { formID: number }) {
 					type="button"
 					value="Clear"
 					onClick={clearAllFields}
-					className="cursor-pointer w-full bg-slate-600 hover:bg-slate-800 text-white font-bold py-2 px-4 rounded-lg"
+					className="cursor-pointer w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg"
 				/>
 				<div className="p-2"></div>
 				<Link
@@ -130,7 +133,7 @@ function Form(props: { formID: number }) {
 					onClick={() => {
 						updateFormData(formData);
 					}}
-					className="text-center block cursor-pointer w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg"
+					className="text-center block cursor-pointer w-full bg-slate-600 hover:bg-slate-800 text-white font-bold py-2 px-4 rounded-lg"
 				>
 					Close
 				</Link>
