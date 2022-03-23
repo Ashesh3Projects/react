@@ -79,11 +79,7 @@ function Form(props: { formID: number }) {
 				}}
 			/>
 			<div className="pb-4"></div>
-			<form
-				className="px-4 w-full"
-				action="{props.action}"
-				method="{props.method}"
-			>
+			<div className="px-4 w-full">
 				{formData?.fields.map((field) => (
 					<Field
 						field={field}
@@ -97,6 +93,12 @@ function Form(props: { formID: number }) {
 						type="text"
 						value={newFieldValue}
 						onChange={(e) => setNewFieldValue(e.target.value)}
+						onKeyUp={(e) => {
+							if (e.key === "Enter") {
+								e.preventDefault();
+								addField();
+							}
+						}}
 						className="border-2 border-gray-200 rounded-lg p-2 w-full"
 					/>
 					<input
@@ -137,7 +139,7 @@ function Form(props: { formID: number }) {
 				>
 					Close
 				</Link>
-			</form>
+			</div>
 		</div>
 	);
 }
