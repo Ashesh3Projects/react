@@ -24,6 +24,17 @@ function Attempt(props: { formID: number; attemptID: number }) {
 			<h1 className="py-2 px-4 pb-2 w-full text-center text-xl items-center font-semibold border-gray-200 rounded-lg">
 				{formDetails?.title} Attempt
 			</h1>
+			<style>
+				input:checked + div {"{"}
+				border-color: rgb(63 131 248)
+				{"}"}
+				input:checked + div svg {"{"}
+				display: block;
+				{"}"}
+				svg.star-svg{"{"}
+				display: inline;
+				{"}"}
+			</style>
 			<div className="flex flex-row justify-between w-100 items-center p-6">
 				<span className="text-sm text-gray-500">
 					ID: {props.attemptID}

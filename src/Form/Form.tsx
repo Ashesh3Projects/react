@@ -2,7 +2,7 @@ import { Link, navigate } from "raviger";
 import React, { useEffect, useState } from "react";
 import { FormDetails, FormField, NewField } from "../types";
 import AddField from "./AddField";
-import Field from "./Field";
+import Field from "./Fields/Field";
 import { getFormData, getRandomID, updateFormData } from "./utils";
 
 function Form(props: { formID: number }) {
@@ -29,15 +29,54 @@ function Form(props: { formID: number }) {
 
 		let updatedFormData: FormDetails = { ...formData };
 
-		updatedFormData.fields.push({
-			id: getRandomID(),
-			label: newFieldData.label,
-			type: newFieldData.type,
-			value: "",
-		});
+		if (
+			newFieldData.type === "text" ||
+			newFieldData.type === "number" ||
+			newFieldData.type === "email" ||
+			newFieldData.type === "password" ||
+			newFieldData.type === "date" ||
+			newFieldData.type === "time"
+		)
+			updatedFormData.fields.push({
+				id: getRandomID(),
+				label: newFieldData.label,
+				type: newFieldData.type,
+				kind: "input",
+				value: "",
+			});
+		else if (newFieldData.type === "textarea")
+			updatedFormData.fields.push({
+				id: getRandomID(),
+				label: newFieldData.label,
+				kind: "textarea",
+				type: "textarea",
+				value: "",
+			});
+		else if (
+			newFieldData.type === "checkbox" ||
+			newFieldData.type === "radio" ||
+			newFieldData.type === "select" ||
+			newFieldData.type === "multi-select"
+		)
+			updatedFormData.fields.push({
+				id: getRandomID(),
+				label: newFieldData.label,
+				type: newFieldData.type,
+				kind: "options",
+				value: "",
+				options: [],
+			});
+		else if (newFieldData.type === "rating")
+			updatedFormData.fields.push({
+				id: getRandomID(),
+				label: newFieldData.label,
+				kind: "rating",
+				type: "rating",
+				value: "",
+			});
 
 		setFormData(updatedFormData);
-		setNewFieldData({ label: "", type: "text" });
+		setNewFieldData({ ...newFieldData, label: "" });
 	};
 
 	const removeField = (id: number) => {
@@ -56,18 +95,6 @@ function Form(props: { formID: number }) {
 		let updatedFormData = formData.fields.map((field) => {
 			if (field.id === id) {
 				return { ...field, ...{ label: value, value: "" } };
-			}
-			return field;
-		});
-		setFormData({ ...formData, fields: updatedFormData });
-	};
-
-	const setFieldType = (id: number, type: string) => {
-		if (!formData) return;
-
-		let updatedFormData = formData.fields.map((field) => {
-			if (field.id === id) {
-				return { ...field, ...{ type: type, value: "" } };
 			}
 			return field;
 		});
@@ -93,8 +120,73 @@ function Form(props: { formID: number }) {
 		}
 	};
 
+	const addNewOption = (field_id: number) => {
+		if (!formData) return;
+		let updatedFormData: FormDetails = { ...formData };
+		updatedFormData.fields = updatedFormData.fields.map((field) => {
+			if (field.id === field_id && field.kind === "options") {
+				return {
+					...field,
+					...{
+						options: [
+							...field.options,
+							{ id: getRandomID(), label: "", selected: false },
+						],
+					},
+				};
+			}
+			return field;
+		});
+		setFormData(updatedFormData);
+	};
+
+	const removeOption = (field_id: number, option_id: number) => {
+		if (!formData) return;
+		let updatedFormData: FormDetails = { ...formData };
+		updatedFormData.fields = updatedFormData.fields.map((field) => {
+			if (field.id === field_id && field.kind === "options") {
+				return {
+					...field,
+					...{
+						options: field.options.filter(
+							(option) => option.id !== option_id
+						),
+					},
+				};
+			}
+			return field;
+		});
+		setFormData(updatedFormData);
+	};
+
+	const setOptionLabel = (
+		field_id: number,
+		option_id: number,
+		value: string
+	) => {
+		if (!formData) return;
+		let updatedFormData: FormDetails = { ...formData };
+		updatedFormData.fields = updatedFormData.fields.map((field) => {
+			if (field.id === field_id && field.kind === "options") {
+				return {
+					...field,
+					...{
+						options: field.options.map((option) => {
+							if (option.id === option_id) {
+								return { ...option, ...{ label: value } };
+							}
+							return option;
+						}),
+					},
+				};
+			}
+			return field;
+		});
+		setFormData(updatedFormData);
+	};
+
 	return (
-		<div className="p-6 mx-auto bg-white shadow-lg rounded-xl min-w-[500px] items-center">
+		<div className="p-6 mx-auto bg-white shadow-lg rounded-xl items-center">
 			<input
 				type="text"
 				defaultValue={formData?.title}
@@ -110,8 +202,10 @@ function Form(props: { formID: number }) {
 						field={field}
 						removeField={removeField}
 						setFieldValue={setFieldValue}
-						setFieldType={setFieldType}
 						key={field.id}
+						addNewOption={addNewOption}
+						removeOption={removeOption}
+						setOptionValue={setOptionLabel}
 					/>
 				))}
 				<AddField
@@ -119,7 +213,7 @@ function Form(props: { formID: number }) {
 					newFieldData={newFieldData}
 					setNewFieldDetail={setNewFieldDetail}
 				/>
-				<div className="p-3"></div>
+				<div className="p-2"></div>
 				<input
 					type="button"
 					onClick={(e) => {
@@ -132,14 +226,14 @@ function Form(props: { formID: number }) {
 					value="Save"
 					className="cursor-pointer w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg"
 				/>
-				<div className="p-2"></div>
+				<div className="p-1"></div>
 				<input
 					type="button"
 					value="Clear"
 					onClick={clearAllFields}
 					className="cursor-pointer w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg"
 				/>
-				<div className="p-2"></div>
+				<div className="p-1"></div>
 				<Link
 					href="/forms"
 					onClick={() => {

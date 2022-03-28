@@ -40,10 +40,10 @@ function FormList() {
 						/>
 					))}
 				</div>
-				<div className="pb-4"></div>
 				{formsList.length === 0 && (
-					<h2 className="p-3 font-semibold pb-6">No forms</h2>
+					<h2 className="p-3 font-semibold pb-3">No forms</h2>
 				)}
+				<div className="pb-4"></div>
 				<Footer />
 			</div>
 		</div>

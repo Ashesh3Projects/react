@@ -29,11 +29,17 @@ function AddField(props: {
 				}
 			>
 				<option value="text">Text</option>
+				<option value="textarea">Textarea</option>
 				<option value="number">Number</option>
 				<option value="email">Email</option>
 				<option value="password">Password</option>
 				<option value="date">Date</option>
 				<option value="time">Time</option>
+				<option value="checkbox">Checkbox</option>
+				<option value="radio">Radio</option>
+				<option value="select">Select</option>
+				<option value="multi-select">Multiple Select</option>
+				<option value="rating">Rating</option>
 			</select>
 			<input
 				type="button"

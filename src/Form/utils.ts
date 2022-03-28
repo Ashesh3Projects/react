@@ -42,27 +42,53 @@ export function getRandomID(): number {
 }
 export function createForm(): FormDetails {
 	let allForms = getAllForms();
-	let formDetails = {
+	let formDetails: FormDetails = {
 		id: getRandomID(),
 		title: "Untitled Form",
 		fields: [
 			{
 				id: getRandomID(),
 				label: "Name",
+				kind: "input",
 				type: "text",
 				value: "",
 			},
 			{
 				id: getRandomID(),
-				label: "Email",
-				type: "email",
+				label: "Phone",
+				kind: "input",
+				type: "number",
 				value: "",
 			},
 			{
 				id: getRandomID(),
-				label: "Phone",
-				type: "number",
+				label: "Gender",
+				kind: "options",
+				type: "radio",
 				value: "",
+				options: [
+					{
+						id: getRandomID(),
+						label: "Male",
+						selected: false,
+					},
+					{
+						id: getRandomID(),
+						label: "Female",
+						selected: false,
+					},
+					{
+						id: getRandomID(),
+						label: "Other",
+						selected: false,
+					},
+				],
+			},
+			{
+				id: getRandomID(),
+				label: "Rate our Form",
+				kind: "rating",
+				type: "rating",
 			},
 		],
 	};

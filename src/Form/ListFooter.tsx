@@ -10,7 +10,7 @@ function Footer() {
 			>
 				Add Form
 			</Link>
-			<div className="pb-4"></div>
+			<div className="pb-3"></div>
 			<Link
 				type="button"
 				href="/"

@@ -53,6 +53,43 @@ function Quiz(props: { formID: number }) {
 			setQuizProgress(updatedQuizData);
 		}
 	};
+	const setFieldValueOption = (
+		fieldID: number,
+		optionID: number,
+		selected: boolean
+	) => {
+		if (
+			currentQuestion &&
+			currentQuestion.id &&
+			currentQuestion.kind === "options"
+		)
+			setCurrentQuestion({
+				...currentQuestion,
+				options: currentQuestion.options.map((option) => {
+					if (option.id === optionID) {
+						return { ...option, selected: selected };
+					}
+					return option;
+				}),
+			});
+		if (quizProgress) {
+			let updatedQuizData = quizProgress.map((field) => {
+				if (field.id === fieldID && field.kind === "options") {
+					return {
+						...field,
+						options: field.options.map((option) => {
+							if (option.id === optionID) {
+								return { ...option, selected: selected };
+							}
+							return option;
+						}),
+					};
+				}
+				return field;
+			});
+			setQuizProgress(updatedQuizData);
+		}
+	};
 
 	const submitQuiz = () => {
 		let all_forms = getAllForms();
@@ -73,6 +110,17 @@ function Quiz(props: { formID: number }) {
 
 	return (
 		<>
+			<style>
+				input:checked + div {"{"}
+				border-color: rgb(63 131 248)
+				{"}"}
+				input:checked + div svg {"{"}
+				display: block;
+				{"}"}
+				svg.star-svg{"{"}
+				display: inline;
+				{"}"}
+			</style>
 			<div className="p-6 mx-auto bg-white shadow-lg rounded-xl min-w-[500px] items-center">
 				<NavBar />
 				<h1 className="pb-2 w-full text-center text-xl items-center font-semibold">
@@ -83,7 +131,7 @@ function Quiz(props: { formID: number }) {
 					totalFields={formData?.fields.length || 1}
 				/>
 				<div className="py-2"></div>
-				{currentQuestion && (
+				{currentQuestion && quizProgress && (
 					<div className="w-full items-center center">
 						<h2 className="px-3 font-semibold pb-6">
 							Question {Number(qIndex) + 1} of{" "}
@@ -94,11 +142,13 @@ function Quiz(props: { formID: number }) {
 							formID={props.formID}
 							qIndex={Number(qIndex)}
 							field={currentQuestion}
+							quizProgress={quizProgress}
 							setFieldValue={setFieldValue}
 							key={currentQuestion.id}
 							submitQuiz={submitQuiz}
+							setFieldValueOption={setFieldValueOption}
 						/>
-						<div className="py-4"></div>
+						<div className="pb-4"></div>
 						<QuizFooter
 							currentQuestion={currentQuestion}
 							formData={formData}

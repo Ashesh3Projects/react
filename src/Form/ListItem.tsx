@@ -8,9 +8,9 @@ function FormListItem(props: { form: FormDetails; deleteForm: Function }) {
 			className="flex flex-row py-2 px-2 items-center justify-center gap-2 border-2 rounded-lg"
 			key={props.form.id}
 		>
-			<h2 className="pb-2 w-full text-center text-xl items-center ">
+			<div className="pb-2 w-full text-center text-xl items-center flex justify-center">
 				{props.form.title}
-			</h2>
+			</div>
 			<Link
 				title="Take Quiz"
 				href={`/quiz/${props.form.id}`}
