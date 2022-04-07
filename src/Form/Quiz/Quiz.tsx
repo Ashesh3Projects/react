@@ -1,20 +1,15 @@
 import { Link, navigate, useQueryParams } from "raviger";
 import React, { useEffect, useState } from "react";
 import NavBar from "../../NavBar";
-import { FormDetails, FormField, QuizAttempt } from "../../types";
-import {
-	getAllForms,
-	getFormData,
-	getRandomID,
-	updateFormData,
-	useEffectOnlyOnce,
-} from "../utils";
+import { FormItem, FormField, Answer } from "../../types";
 import QuizField from "./QuizField";
-import QuizFooter from "./QuizFooterNav";
+import QuizFooterNav from "./QuizFooterNav";
 import QuizProgress from "./QuizProgressBar";
+import * as api from "../../api";
+import { useEffectOnlyOnce } from "../utils";
 
 function Quiz(props: { formID: number }) {
-	const [formData, setFormData] = useState<FormDetails>();
+	const [formData, setFormData] = useState<FormItem>();
 
 	const [currentQuestion, setCurrentQuestion] = useState<FormField>();
 
@@ -25,20 +20,33 @@ function Quiz(props: { formID: number }) {
 
 	useEffectOnlyOnce(() => {
 		if (!qIndex) setQIndex({ qIndex: 0 });
-		let newFormData = getFormData(props.formID);
-		newFormData.fields = newFormData.fields.map((field) => ({
-			...field,
-			value: "",
-		}));
-		setFormData(newFormData);
-		setQuizProgress(newFormData.fields);
+		(async () => {
+			return api.forms.get(props.formID);
+		})()
+			.then((formDetails) => {
+				api.forms.fields
+					.get(formDetails.id)
+					.then((fetchedFieldData) => {
+						setFormData(formDetails);
+						fetchedFieldData.results.sort((a, b) => a.id - b.id);
+						let fields = fetchedFieldData.results.map(
+							(field: FormField) => {
+								return { ...field, value: "" };
+							}
+						);
+						setQuizProgress(fields);
+					});
+			})
+			.catch((err) => {
+				if (err === 403) navigate(`/login`);
+			});
 	});
 
 	useEffect(() => {
-		if (qIndex) {
-			setCurrentQuestion(formData?.fields[Number(qIndex)]);
+		if (qIndex && quizProgress) {
+			setCurrentQuestion(quizProgress[Number(qIndex)]);
 		}
-	}, [formData, qIndex]);
+	}, [quizProgress, qIndex]);
 
 	const setFieldValue = (fieldID: number, value: string) => {
 		if (currentQuestion && currentQuestion.id)
@@ -61,11 +69,12 @@ function Quiz(props: { formID: number }) {
 		if (
 			currentQuestion &&
 			currentQuestion.id &&
-			currentQuestion.kind === "options"
+			(currentQuestion.kind === "RADIO" ||
+				currentQuestion.kind === "DROPDOWN")
 		)
 			setCurrentQuestion({
 				...currentQuestion,
-				options: currentQuestion.options.map((option) => {
+				options: currentQuestion.options?.map((option) => {
 					if (option.id === optionID) {
 						return { ...option, selected: selected };
 					}
@@ -74,10 +83,13 @@ function Quiz(props: { formID: number }) {
 			});
 		if (quizProgress) {
 			let updatedQuizData = quizProgress.map((field) => {
-				if (field.id === fieldID && field.kind === "options") {
+				if (
+					field.id === fieldID &&
+					(field.kind === "RADIO" || field.kind === "DROPDOWN")
+				) {
 					return {
 						...field,
-						options: field.options.map((option) => {
+						options: field.options?.map((option) => {
 							if (option.id === optionID) {
 								return { ...option, selected: selected };
 							}
@@ -92,20 +104,24 @@ function Quiz(props: { formID: number }) {
 	};
 
 	const submitQuiz = () => {
-		let all_forms = getAllForms();
-		let form = all_forms.find((frm) => frm.id === props.formID);
-		if (form) {
-			let attempts = form?.attempts || [];
-			let newAttempt: QuizAttempt = {
-				id: getRandomID(),
-				answers: quizProgress || [],
-				date: new Date(),
-			};
-			attempts.push(newAttempt);
-			form.attempts = attempts;
-		}
-		updateFormData(form);
-		navigate(`/quiz/${props.formID}/results`);
+		if (!formData || !quizProgress) return;
+
+		let answers: Answer[] = [];
+		quizProgress.forEach((field) => {
+			answers.push({
+				form_field: field.id,
+				value: field.value || "-",
+			});
+		});
+
+		api.forms.submissions
+			.create(props.formID, {
+				answers: answers,
+				form: formData,
+			})
+			.then(() => {
+				navigate(`/quiz/${props.formID}/results`);
+			});
 	};
 
 	return (
@@ -126,19 +142,21 @@ function Quiz(props: { formID: number }) {
 				<h1 className="pb-2 w-full text-center text-xl items-center font-semibold">
 					{formData?.title} Quiz
 				</h1>
-				<QuizProgress
-					qIndex={Number(qIndex)}
-					totalFields={formData?.fields.length || 1}
-				/>
+				{quizProgress && (
+					<QuizProgress
+						qIndex={Number(qIndex)}
+						totalFields={quizProgress.length || 1}
+					/>
+				)}
 				<div className="py-2"></div>
 				{currentQuestion && quizProgress && (
 					<div className="w-full items-center center">
 						<h2 className="px-3 font-semibold pb-6">
 							Question {Number(qIndex) + 1} of{" "}
-							{formData?.fields.length}
+							{quizProgress.length}
 						</h2>
 						<QuizField
-							fieldLength={formData?.fields.length || 1}
+							fieldLength={quizProgress.length || 1}
 							formID={props.formID}
 							qIndex={Number(qIndex)}
 							field={currentQuestion}
@@ -149,9 +167,10 @@ function Quiz(props: { formID: number }) {
 							setFieldValueOption={setFieldValueOption}
 						/>
 						<div className="pb-4"></div>
-						<QuizFooter
+						<QuizFooterNav
 							currentQuestion={currentQuestion}
 							formData={formData}
+							fieldData={quizProgress}
 							qIndex={qIndex}
 							setFieldValue={setFieldValue}
 							submitQuiz={submitQuiz}

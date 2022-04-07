@@ -1,8 +1,8 @@
 import React from "react";
-import { FormInputField, FormTextAreaField } from "../../../types";
+import { FormField } from "../../../types";
 
 export default function QuizTextField(props: {
-	field: FormInputField | FormTextAreaField;
+	field: FormField;
 	setFieldValue: Function;
 	progressValue: string;
 	keyUpAction: Function;

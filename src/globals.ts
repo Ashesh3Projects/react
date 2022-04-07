@@ -1,5 +1,12 @@
+import { hasToken } from "./api";
+
 export const NAV_BAR = [
 	{ page: "Home", url: "/" },
 	{ page: "About", url: "/about" },
-	{ page: "Forms", url: "/forms" },
+	...(hasToken()
+		? [
+				{ page: "Forms", url: "/forms" },
+				{ page: "Logout", url: "/logout" },
+		  ]
+		: [{ page: "Login", url: "/login" }]),
 ];

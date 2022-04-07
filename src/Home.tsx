@@ -6,7 +6,7 @@ function Home() {
 	return (
 		<div className="p-6 mx-auto bg-white shadow-lg rounded-xl">
 			<Nav />
-			<Header title="Welcome to Milestone 6 of #react-typescript with #tailwindcss" />
+			<Header title="Welcome to Milestone 7 of #react-typescript with #tailwindcss" />
 		</div>
 	);
 }

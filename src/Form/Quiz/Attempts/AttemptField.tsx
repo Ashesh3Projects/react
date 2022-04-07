@@ -1,76 +1,52 @@
 import React from "react";
-import { Rating } from "react-simple-star-rating";
-import { FormField } from "../../../types";
+import { Answer, FormField } from "../../../types";
 import QuizInputField from "../Fields/QuizInputField";
 import QuizOptionField from "../Fields/QuizOptionField";
-import QuizTextField from "../Fields/QuizTextField";
 
-function AttemptField(props: { field: FormField }) {
+function AttemptField(props: { field?: FormField; answer: Answer }) {
 	return (
-		<div key={props.field.id} className="pb-2">
+		<div key={props.field?.id} className="pb-2">
 			<label
-				htmlFor={props.field.label}
+				htmlFor={props.field?.label}
 				className="pb-2 font-semibold text-sm"
 			>
-				{props.field.label}
+				{props.field?.label}
 			</label>
 			<div className="flex gap-2">
-				{((field: FormField) => {
+				{((field?: FormField) => {
+					if (!field) return null;
 					switch (field.kind) {
-						case "input":
+						case "TEXT":
 							return (
 								<QuizInputField
 									field={field}
-									progressValue={field.value || ""}
+									progressValue={props.answer.value || ""}
 									keyUpAction={() => {}}
 									setFieldValue={() => {}}
 									disabled={true}
 								/>
 							);
-						case "textarea":
-							return (
-								<QuizTextField
-									field={field}
-									progressValue={field.value || ""}
-									keyUpAction={() => {}}
-									setFieldValue={() => {}}
-									disabled={true}
-								/>
-							);
-						case "options":
+						case "DROPDOWN":
+						case "RADIO":
 							return (
 								<QuizOptionField
 									field={field}
 									keyUpAction={() => {}}
 									setFieldValue={() => {}}
 									disabled={true}
-									selectedOptions={field.options.map((o) =>
-										o.selected ? o.id : -1
-									)}
+									selectedOptions={
+										field.options?.map((o) =>
+											o.id === props.answer.form_field
+												? o.id
+												: -1
+										) || []
+									}
 									setFieldValueOption={() => {}}
-									selectedValue={field.value}
-								/>
-							);
-						case "rating":
-							return (
-								<Rating
-									ratingValue={Number(field.value) || 0}
-									readonly={true}
+									selectedValue={props.answer.value || ""}
 								/>
 							);
 					}
 				})(props.field)}
-				{/* <input
-					type={
-						props.field.type === "password"
-							? "text"
-							: props.field.type
-					}
-					id={props.field.label}
-					value={props.field.value}
-					disabled={true}
-					className="border-2 border-gray-200 rounded-lg p-2 w-full"
-				/> */}
 			</div>
 		</div>
 	);

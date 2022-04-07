@@ -5,8 +5,7 @@ import { getFormattedDate } from "../../utils";
 function AttemptItem(props: {
 	formID: number;
 	attemptID: number;
-	attemptDate: Date;
-	deleteForm: Function;
+	attemptDate: string;
 }) {
 	return (
 		<div
@@ -18,7 +17,7 @@ function AttemptItem(props: {
 					<span className="text-sm text-gray-500">
 						ID: {props.attemptID}
 					</span>
-					<span>{getFormattedDate(new Date(props.attemptDate))}</span>
+					<span>{getFormattedDate(props.attemptDate)}</span>
 				</div>
 				<div className="flex gap-2 text-center">
 					<Link
@@ -28,15 +27,6 @@ function AttemptItem(props: {
 					>
 						&#9872;
 					</Link>
-					<input
-						title="Delete Attempt"
-						type="button"
-						value="&#10006;"
-						onClick={() => {
-							props.deleteForm(props.attemptID);
-						}}
-						className="cursor-pointer bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-					/>
 				</div>
 			</div>
 		</div>

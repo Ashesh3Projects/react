@@ -1,8 +1,8 @@
 import React from "react";
-import { OptionsField } from "../../types";
+import { FormField } from "../../types";
 
 export default function OptionField(props: {
-	field: OptionsField;
+	field: FormField;
 	setFieldValue: Function;
 	removeField: Function;
 	setOptionValue: Function;
@@ -14,8 +14,11 @@ export default function OptionField(props: {
 			<div className="flex w-full">
 				<div className="flex flex-col w-full justify-between rounded-lg p-2 border-4 gap-2 px-8 pb-5">
 					<div className="flex flex-col">
-						<span className="text-sm text-gray-500 pb-1">
-							Type: {props.field.type}
+						<span className="text-sm text-gray-500">
+							Type:{" "}
+							<span className="capitalize">
+								{props.field.kind.toLocaleLowerCase()}
+							</span>
 						</span>
 					</div>
 					<div className="flex gap-2">
@@ -40,8 +43,8 @@ export default function OptionField(props: {
 						/>
 					</div>
 					<div className="py-1"></div>
-					<div className="px-3 rounded-lg p-2 border-4 gap-2 px-8">
-						{props.field.options.map((option) => (
+					<div className="rounded-lg p-2 border-4 gap-2 px-8">
+						{props.field.options?.map((option) => (
 							<div className="flex gap-2 py-2" key={option.id}>
 								<div className="flex justify-center items-center font-bold text-xl">
 									&#8614;

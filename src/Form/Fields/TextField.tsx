@@ -1,8 +1,8 @@
 import React from "react";
-import { FormInputField, FormTextAreaField, RatingField } from "../../types";
+import { FormField } from "../../types";
 
 export default function TextField(props: {
-	field: FormInputField | FormTextAreaField | RatingField;
+	field: FormField;
 	setFieldValue: Function;
 	removeField: Function;
 }) {
@@ -10,8 +10,11 @@ export default function TextField(props: {
 		<div className="flex w-full">
 			<div className="flex flex-col w-full rounded-lg p-2 border-4 gap-2 px-8">
 				<div className="flex flex-col">
-					<span className="text-sm text-gray-500 pb-1">
-						Type: {props.field.type}
+					<span className="text-sm text-gray-500 capitalize">
+						Type:{" "}
+						<span className="capitalize">
+							{props.field.kind.toLocaleLowerCase()}
+						</span>
 					</span>
 				</div>
 				<div className="flex gap-2">

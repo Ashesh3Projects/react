@@ -1,5 +1,6 @@
 import { Link } from "raviger";
 import React from "react";
+import { hasToken } from "./api";
 import logo from "./logo.svg";
 
 function Header(props: { title: string }) {
@@ -19,7 +20,7 @@ function Header(props: { title: string }) {
 			<div className="p-3"></div>
 			<div>
 				<Link
-					href="/forms"
+					href={hasToken() ? "/forms" : "/login"}
 					className="cursor-pointer w-full flex bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg justify-center"
 				>
 					Enter

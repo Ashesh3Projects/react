@@ -1,30 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { FormDetails, QuizAttempt } from "../../../types";
 import NavBar from "../../../NavBar";
-import { getAllForms, getFormData, updateFormData } from "../../utils";
 import AttemptItem from "./AttemptItem";
 import AttemptFooter from "./AttemptFooter";
+import { FormItem, FormSubmission } from "../../../types";
+import * as api from "../../../api";
 import { navigate } from "raviger";
 
 function AttemptList(props: { formID: number }) {
-	const [formData, setFormData] = useState<FormDetails>();
+	const [attemptsData, setAttemptsData] = useState<FormSubmission[]>();
+	const [formData, setFormData] = useState<FormItem>();
 
 	useEffect(() => {
-		let newFormData = getFormData(props.formID);
-		setFormData(newFormData);
+		(async () => {
+			return api.forms.submissions.list(props.formID);
+		})().then((submissionsDetail) => {
+			setAttemptsData(submissionsDetail.results);
+			api.forms
+				.get(props.formID)
+				.then((formDetail) => {
+					setFormData(formDetail);
+				})
+				.catch((err) => {
+					if (err === 403) navigate(`/login`);
+				});
+		});
 	}, [props.formID]);
-
-	const deleteAttempt = (id: number) => {
-		let all_forms = getAllForms();
-		let form = all_forms.find((frm) => frm.id === props.formID);
-		if (form) {
-			let attempts = form?.attempts || [];
-			form.attempts = attempts.filter((attempt) => attempt.id !== id);
-		}
-		updateFormData(form);
-		setFormData(form);
-		navigate(`/quiz/${props.formID}/results`);
-	};
 
 	return (
 		<div className="px-6 py-4 mx-auto bg-white shadow-lg rounded-xl min-w-[600px] items-center">
@@ -34,16 +34,15 @@ function AttemptList(props: { formID: number }) {
 					Attempts for <strong>{formData?.title}</strong>
 				</h1>
 				<div className="py-2"></div>
-				{(formData?.attempts || []).map((attempt: QuizAttempt) => (
+				{(attemptsData || []).map((attempt: FormSubmission) => (
 					<AttemptItem
 						key={attempt.id}
 						formID={props.formID}
 						attemptID={attempt.id}
-						attemptDate={attempt.date}
-						deleteForm={deleteAttempt}
+						attemptDate={attempt.created_date}
 					/>
 				))}
-				{(formData?.attempts || []).length === 0 && (
+				{(attemptsData || []).length === 0 && (
 					<h2 className="p-2 font-semibold">No Attempts</h2>
 				)}
 				<div className="pb-2"></div>

@@ -28,18 +28,9 @@ function AddField(props: {
 					props.setNewFieldDetail("type", e.target.value)
 				}
 			>
-				<option value="text">Text</option>
-				<option value="textarea">Textarea</option>
-				<option value="number">Number</option>
-				<option value="email">Email</option>
-				<option value="password">Password</option>
-				<option value="date">Date</option>
-				<option value="time">Time</option>
-				<option value="checkbox">Checkbox</option>
-				<option value="radio">Radio</option>
-				<option value="select">Select</option>
-				<option value="multi-select">Multiple Select</option>
-				<option value="rating">Rating</option>
+				<option value="TEXT">Text</option>
+				<option value="DROPDOWN">Dropdown</option>
+				<option value="RADIO">Radio</option>
 			</select>
 			<input
 				type="button"

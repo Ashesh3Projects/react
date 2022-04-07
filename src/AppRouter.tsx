@@ -7,10 +7,22 @@ import Attempt from "./Form/Quiz/Attempts/Attempt";
 import AttemptList from "./Form/Quiz/Attempts/AttemptsList";
 import Quiz from "./Form/Quiz/Quiz";
 import Home from "./Home";
+import Login from "./Login";
+import { hasToken } from "./api";
+import NotFound from "./NotFound";
 
-const routes = {
+const publicRoutes = {
 	"/": () => <Home />,
+	"/login": () => <Login />,
+	"/logout": () => {
+		localStorage.removeItem("token");
+		window.location.href = "/";
+		return <Home />;
+	},
 	"/about": () => <About />,
+};
+
+const authRoutes = {
 	"/forms": () => <FormList />,
 	"/forms/:id": ({ id }: { id: string }) => <Form formID={Number(id)} />,
 	"/quiz/:id": ({ id }: { id: string }) => <Quiz formID={Number(id)} />,
@@ -27,5 +39,8 @@ const routes = {
 };
 
 export default function AppRouter() {
-	return <Container>{useRoutes(routes)}</Container>;
+	const routes = hasToken()
+		? { ...publicRoutes, ...authRoutes }
+		: publicRoutes;
+	return <Container>{useRoutes(routes) || <NotFound></NotFound>}</Container>;
 }

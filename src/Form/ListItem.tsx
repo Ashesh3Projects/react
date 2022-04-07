@@ -1,8 +1,8 @@
 import { Link } from "raviger";
 import React from "react";
-import { FormDetails } from "../types";
+import { FormItem } from "../types";
 
-function FormListItem(props: { form: FormDetails; deleteForm: Function }) {
+function FormListItem(props: { form: FormItem; deleteForm: Function }) {
 	return (
 		<div
 			className="flex flex-row py-2 px-2 items-center justify-center gap-2 border-2 rounded-lg"

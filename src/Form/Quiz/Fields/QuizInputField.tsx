@@ -1,8 +1,8 @@
 import React from "react";
-import { FormInputField, FormTextAreaField } from "../../../types";
+import { FormField } from "../../../types";
 
 export default function QuizInputField(props: {
-	field: FormInputField | FormTextAreaField;
+	field: FormField;
 	setFieldValue: Function;
 	progressValue: string;
 	keyUpAction: Function;
@@ -11,9 +11,10 @@ export default function QuizInputField(props: {
 	return (
 		<>
 			<input
+				required={true}
 				autoFocus={true}
 				disabled={props.disabled || false}
-				type={props.field.type}
+				type={props.field.kind}
 				id={props.field.label}
 				value={props.progressValue}
 				autoComplete="off"

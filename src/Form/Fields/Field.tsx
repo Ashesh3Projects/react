@@ -16,8 +16,7 @@ function Field(props: {
 			<div className="flex gap-1">
 				{((field: FormField) => {
 					switch (field.kind) {
-						case "input":
-						case "textarea":
+						case "TEXT":
 							return (
 								<TextField
 									field={field}
@@ -25,7 +24,8 @@ function Field(props: {
 									removeField={props.removeField}
 								/>
 							);
-						case "options":
+						case "DROPDOWN":
+						case "RADIO":
 							return (
 								<OptionField
 									field={field}
@@ -34,15 +34,6 @@ function Field(props: {
 									addNewOption={props.addNewOption}
 									setOptionValue={props.setOptionValue}
 									removeOption={props.removeOption}
-								/>
-							);
-
-						case "rating":
-							return (
-								<TextField
-									field={field}
-									setFieldValue={props.setFieldValue}
-									removeField={props.removeField}
 								/>
 							);
 					}

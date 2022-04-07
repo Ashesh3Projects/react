@@ -1,12 +1,13 @@
 import { Link } from "raviger";
 import React from "react";
-import { FormDetails, FormField } from "../../types";
+import { FormField, FormItem } from "../../types";
 
-function QuizFooter(props: {
+function QuizFooterNav(props: {
 	formID: number;
 	qIndex: number;
 	currentQuestion: FormField;
-	formData?: FormDetails;
+	formData?: FormItem;
+	fieldData?: FormField[];
 	setFieldValue: Function;
 	submitQuiz: Function;
 }) {
@@ -34,7 +35,7 @@ function QuizFooter(props: {
 						</Link>
 					)}
 					{Number(props.qIndex) <
-						(props.formData?.fields.length || 1) - 1 && (
+						(props.fieldData?.length || 1) - 1 && (
 						<Link
 							href={`/quiz/${props.formID}?qIndex=${
 								Number(props.qIndex) + 1
@@ -47,7 +48,7 @@ function QuizFooter(props: {
 						</Link>
 					)}
 					{Number(props.qIndex) ===
-						(props.formData?.fields.length || 1) - 1 && (
+						(props.fieldData?.length || 1) - 1 && (
 						<Link
 							href={"#"}
 							onClick={() => {
@@ -66,4 +67,4 @@ function QuizFooter(props: {
 	);
 }
 
-export default QuizFooter;
+export default QuizFooterNav;

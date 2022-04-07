@@ -1,28 +1,31 @@
 import { Link, navigate } from "raviger";
 import React, { useState } from "react";
-import { FormDetails, QuizAttempt } from "../../../types";
-import { getFormattedDate, getFormData, useEffectOnlyOnce } from "../../utils";
+import { FormField, FormSubmission } from "../../../types";
+import { getFormattedDate, useEffectOnlyOnce } from "../../utils";
 import AttemptField from "./AttemptField";
+import * as api from "../../../api";
 
 function Attempt(props: { formID: number; attemptID: number }) {
-	const [attemptData, setAttemptData] = useState<QuizAttempt>();
-	const [formDetails, setFormDetails] = useState<FormDetails>();
+	const [attemptData, setAttemptData] = useState<FormSubmission>();
+	const [formFields, setFormFields] = useState<FormField[]>();
 
 	useEffectOnlyOnce(() => {
-		let newFormData = getFormData(props.formID);
-		setFormDetails(newFormData);
-		if (!newFormData.attempts) return navigate(`/forms/${props.formID}`);
-		let attempt = newFormData.attempts.find(
-			(atmpt) => atmpt.id === props.attemptID
-		);
-		if (!attempt) return navigate(`/forms/${newFormData.id}`);
-		setAttemptData(attempt);
+		(async () => {
+			return api.forms.submissions.get(props.formID, props.attemptID);
+		})().then((attemptDetails) => {
+			if (!attemptDetails) return navigate(`/forms/${props.formID}`);
+			api.forms.fields.get(props.formID).then((fetchedFieldData) => {
+				fetchedFieldData.results.sort((a, b) => a.id - b.id);
+				setFormFields(fetchedFieldData.results);
+				setAttemptData(attemptDetails);
+			});
+		});
 	});
 
 	return (
 		<div className="p-6 mx-auto bg-white shadow-lg rounded-xl min-w-[500px] items-center">
 			<h1 className="py-2 px-4 pb-2 w-full text-center text-xl items-center font-semibold border-gray-200 rounded-lg">
-				{formDetails?.title} Attempt
+				{attemptData?.form.title} Attempt
 			</h1>
 			<style>
 				input:checked + div {"{"}
@@ -39,9 +42,7 @@ function Attempt(props: { formID: number; attemptID: number }) {
 				<span className="text-sm text-gray-500">
 					ID: {props.attemptID}
 				</span>
-				<span>
-					{getFormattedDate(new Date(attemptData?.date || ""))}
-				</span>
+				<span>{getFormattedDate(attemptData?.created_date || "")}</span>
 			</div>
 			<div className="pb-4"></div>
 			<form
@@ -49,8 +50,16 @@ function Attempt(props: { formID: number; attemptID: number }) {
 				action="{props.action}"
 				method="{props.method}"
 			>
-				{attemptData?.answers.map((field) => (
-					<AttemptField field={field} key={field.id} />
+				{attemptData?.answers.map((answer) => (
+					<AttemptField
+						field={
+							formFields?.filter(
+								(field) => field.id === answer.form_field
+							)[0]
+						}
+						answer={answer}
+						key={answer.form_field}
+					/>
 				))}
 
 				<div className="p-3"></div>

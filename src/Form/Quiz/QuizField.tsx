@@ -1,10 +1,8 @@
 import { navigate } from "raviger";
 import React from "react";
-import { FormField, OptionsField } from "../../types";
+import { FormField } from "../../types";
 import QuizOptionField from "./Fields/QuizOptionField";
 import QuizInputField from "./Fields/QuizInputField";
-import QuizTextField from "./Fields/QuizTextField";
-import { Rating } from "react-simple-star-rating";
 
 function QuizField(props: {
 	formID: number;
@@ -39,7 +37,7 @@ function QuizField(props: {
 			<div className="flex gap-2">
 				{((field: FormField) => {
 					switch (field.kind) {
-						case "input":
+						case "TEXT":
 							return (
 								<QuizInputField
 									field={field}
@@ -52,20 +50,8 @@ function QuizField(props: {
 									keyUpAction={keyUpAction}
 								/>
 							);
-						case "textarea":
-							return (
-								<QuizTextField
-									field={field}
-									progressValue={
-										props.quizProgress?.find(
-											(f) => f.id === field.id
-										)?.value || ""
-									}
-									setFieldValue={props.setFieldValue}
-									keyUpAction={keyUpAction}
-								/>
-							);
-						case "options":
+						case "DROPDOWN":
+						case "RADIO":
 							return (
 								<QuizOptionField
 									field={field}
@@ -77,40 +63,21 @@ function QuizField(props: {
 										)?.value || ""
 									}
 									selectedOptions={
-										(
-											props.quizProgress?.find(
+										props.quizProgress
+											?.find(
 												(f) =>
 													f.id === field.id &&
-													f.kind === "options"
-											) as OptionsField
-										)?.options.map((o) =>
-											o.selected ? o.id : -1
-										) || []
+													(f.kind === "RADIO" ||
+														f.kind === "DROPDOWN")
+											)
+											?.options?.map((o) =>
+												o.selected ? o.id : -1
+											) || []
 									}
 									setFieldValueOption={
 										props.setFieldValueOption
 									}
 								/>
-							);
-
-						case "rating":
-							return (
-								<div className="flex flex-row w-full">
-									<Rating
-										className="w-full"
-										allowHalfIcon={true}
-										onClick={(rate) => {
-											props.setFieldValue(field.id, rate);
-										}}
-										ratingValue={
-											Number(
-												props.quizProgress?.find(
-													(f) => f.id === field.id
-												)?.value
-											) || 0
-										}
-									/>
-								</div>
 							);
 					}
 				})(props.field)}

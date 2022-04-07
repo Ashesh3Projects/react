@@ -4,59 +4,71 @@ export type QuizAttempt = {
 	answers: FormField[];
 };
 
-export type FormInputField = {
-	kind: "input";
-	id: number;
+export type NewField = {
 	label: string;
-	type: "text" | "number" | "email" | "password" | "date" | "time";
-	value?: string;
+	type: "TEXT" | "DROPDOWN" | "RADIO" | "GENERIC";
 };
 
-export type FormTextAreaField = {
-	kind: "textarea";
-	type: "textarea";
-	id: number;
-	label: string;
-	value?: string;
+export type LoginResponse = {
+	token: string;
 };
 
-export type Option = {
+export type FormFieldOption = {
 	id: number;
 	label: string;
 	selected: boolean;
 };
 
-export type OptionsField = {
-	kind: "options";
+export type FormField = {
 	id: number;
 	label: string;
-	type: "radio" | "checkbox" | "select" | "multi-select";
-	options: Option[];
+	kind: "TEXT" | "DROPDOWN" | "RADIO" | "GENERIC";
+	options?: FormFieldOption[];
 	value?: string;
+	meta?: {
+		description: string;
+	};
 };
 
-export type RatingField = {
-	kind: "rating";
-	type: "rating";
-	id: number;
-	label: string;
-	value?: string;
-};
-
-export type FormDetails = {
+export type FormItem = {
 	id: number;
 	title: string;
-	fields: FormField[];
-	attempts?: QuizAttempt[];
+	description: string;
+	is_public: boolean;
+	created_by: number;
+	created_date: string;
+	modified_date: string;
 };
 
-export type NewField = {
-	label: string;
-	type: string;
+export type FormsListResult = {
+	count: number;
+	next: string;
+	previous: string;
+	results: FormItem[];
 };
 
-export type FormField =
-	| FormInputField
-	| FormTextAreaField
-	| OptionsField
-	| RatingField;
+export type FormsFieldListResult = {
+	count: number;
+	next: string;
+	previous: string;
+	results: FormField[];
+};
+
+export type Answer = {
+	form_field: number;
+	value: string;
+};
+
+export type FormSubmission = {
+	id: number;
+	answers: Answer[];
+	form: FormItem;
+	created_date: string;
+};
+
+export type SubmissionListResult = {
+	count: number;
+	next: string;
+	previous: string;
+	results: FormSubmission[];
+};
