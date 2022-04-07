@@ -116,7 +116,10 @@ function Login() {
 					</button>
 
 					<div className="sm:flex sm:flex-wrap mt-8 sm:mb-4 text-sm text-center">
-						<a href="/" className="flex-2 underline">
+						<a
+							href="https://tsapi.coronasafe.live/accounts/password/reset/"
+							className="flex-2 underline"
+						>
 							Forgot password?
 						</a>
 
@@ -124,7 +127,10 @@ function Login() {
 							or
 						</p>
 
-						<a href="/" className="flex-2 underline">
+						<a
+							href="https://tsapi.coronasafe.live/accounts/signup/"
+							className="flex-2 underline"
+						>
 							Create an Account
 						</a>
 					</div>
