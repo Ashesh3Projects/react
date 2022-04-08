@@ -43,9 +43,13 @@ export default function OptionField(props: {
 						/>
 					</div>
 					<div className="py-1"></div>
-					<div className="rounded-lg p-2 border-4 gap-2 px-8">
+					<ul
+						className="rounded-lg p-2 border-4 gap-2 px-8"
+						tabIndex={0}
+						aria-label="Field Options Section"
+					>
 						{props.field.options?.map((option) => (
-							<div className="flex gap-2 py-2" key={option.id}>
+							<li className="flex gap-2 py-2" key={option.id}>
 								<div className="flex justify-center items-center font-bold text-xl">
 									&#8614;
 								</div>
@@ -65,6 +69,7 @@ export default function OptionField(props: {
 								<input
 									type="button"
 									value="Remove"
+									aria-label="Remove Option"
 									className="cursor-pointer font-bold bg-purple-500 hover:bg-purple-700 text-white rounded-lg px-4"
 									onClick={() =>
 										props.removeOption(
@@ -73,7 +78,7 @@ export default function OptionField(props: {
 										)
 									}
 								/>
-							</div>
+							</li>
 						))}
 						<div className="flex gap-1">
 							<input
@@ -85,7 +90,7 @@ export default function OptionField(props: {
 								className="w-full py-2 cursor-pointer font-bold bg-pink-500 hover:bg-pink-700 text-white rounded-lg px-3"
 							/>
 						</div>
-					</div>
+					</ul>
 				</div>
 			</div>
 		</>

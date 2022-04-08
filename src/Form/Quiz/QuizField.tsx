@@ -25,11 +25,18 @@ function QuizField(props: {
 		}
 	};
 	return (
-		<div key={props.field.id} className="pb-2">
+		<div
+			id="QuizContent"
+			key={props.field.id}
+			className="pb-2"
+			tabIndex={0}
+			aria-label="Quiz Field"
+		>
 			<div className="pb-2">
 				<label
 					htmlFor={props.field.label}
 					className="pb-2 font-semibold text-sm"
+					tabIndex={0}
 				>
 					{props.field.label}
 				</label>

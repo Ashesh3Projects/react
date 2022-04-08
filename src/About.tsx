@@ -7,7 +7,11 @@ function About() {
 		<>
 			<figure className="p-6 mx-auto bg-white shadow-lg rounded-xl">
 				<NavBar />
-				<div className="border-2 border-slate-700 rounded-lg">
+				<div
+					className="border-2 border-slate-700 rounded-lg"
+					tabIndex={0}
+					aria-label="About Page"
+				>
 					<img
 						className="w-24 h-24 md:w-48 md:h-auto md:rounded-none rounded-full mx-auto animate-spin "
 						src={logo}
@@ -18,7 +22,7 @@ function About() {
 					/>
 					<div className="pt-6 p-8 text-center md:text-left space-y-4">
 						<blockquote>
-							<p className="text-lg font-medium">
+							<p className="text-lg font-medium" tabIndex={0}>
 								"This app is called Quizzie, and it allows you
 								to create and manage quizzes, as well as take
 								them and see your results.
@@ -27,7 +31,7 @@ function About() {
 								topic."
 							</p>
 						</blockquote>
-						<figcaption className="font-medium">
+						<figcaption className="font-medium" tabIndex={0}>
 							<div className="text-sky-600 ">Ashesh Kumar</div>
 							<div className="text-slate-700 ">
 								Student, GDC Fellowship

@@ -16,7 +16,7 @@ function QuizFooterNav(props: {
 			{props.currentQuestion && (
 				<div className="flex justify-between w-full gap-16">
 					{Number(props.qIndex) === 0 && (
-						<Link href={`/forms`} className="w-full">
+						<Link tabIndex={1} href={`/forms`} className="w-full">
 							<button className="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
 								Cancel
 							</button>
@@ -24,6 +24,10 @@ function QuizFooterNav(props: {
 					)}
 					{Number(props.qIndex) > 0 && (
 						<Link
+							tabIndex={1}
+							onClick={() => {
+								document.getElementById("QuizContent")?.focus();
+							}}
 							href={`/quiz/${props.formID}?qIndex=${
 								Number(props.qIndex) - 1
 							}`}
@@ -37,9 +41,13 @@ function QuizFooterNav(props: {
 					{Number(props.qIndex) <
 						(props.fieldData?.length || 1) - 1 && (
 						<Link
+							tabIndex={1}
 							href={`/quiz/${props.formID}?qIndex=${
 								Number(props.qIndex) + 1
 							}`}
+							onClick={() => {
+								document.getElementById("QuizContent")?.focus();
+							}}
 							className="w-full"
 						>
 							<button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
@@ -50,6 +58,7 @@ function QuizFooterNav(props: {
 					{Number(props.qIndex) ===
 						(props.fieldData?.length || 1) - 1 && (
 						<Link
+							tabIndex={1}
 							href={"#"}
 							onClick={() => {
 								props.submitQuiz();

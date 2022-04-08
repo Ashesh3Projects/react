@@ -12,7 +12,7 @@ export default function QuizInputField(props: {
 		<>
 			<input
 				required={true}
-				autoFocus={true}
+				aria-label={"Quiz Input Field, Question: " + props.field.label}
 				disabled={props.disabled || false}
 				type={props.field.kind}
 				id={props.field.label}

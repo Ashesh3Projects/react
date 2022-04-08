@@ -10,6 +10,7 @@ function AddField(props: {
 		<div className="flex gap-2 border-2 border-gray-200 rounded-lg p-2 my-2">
 			<input
 				type="text"
+				aria-label="New Field Input"
 				value={props.newFieldData.label}
 				onChange={(e) =>
 					props.setNewFieldDetail("label", e.target.value)
@@ -23,6 +24,7 @@ function AddField(props: {
 				className="border-2 border-gray-200 rounded-lg p-2 w-full"
 			/>
 			<select
+				aria-label="New Field Type"
 				className="border-2 border-gray-200 rounded-lg p-2 w-full"
 				onChange={(e) =>
 					props.setNewFieldDetail("type", e.target.value)
@@ -35,6 +37,7 @@ function AddField(props: {
 			<input
 				type="button"
 				value="Add Question"
+				aria-label="Add Question"
 				onClick={() => {
 					props.addField();
 				}}

@@ -13,7 +13,10 @@ function Header(props: { title: string }) {
 					alt="logo"
 					style={{ animation: "spin 2s linear infinite" }}
 				/>
-				<h1 className="flex text-center text-xl items-center font-semibold">
+				<h1
+					tabIndex={0}
+					className="flex text-center text-xl items-center font-semibold"
+				>
 					{props.title}
 				</h1>
 			</div>

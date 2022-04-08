@@ -12,7 +12,12 @@ function Field(props: {
 	removeOption: Function;
 }) {
 	return (
-		<div key={props.field.id} className="pb-3">
+		<li
+			key={props.field.id}
+			className="pb-3"
+			aria-label={`Form Input: Label "${props.field.label}" of type "${props.field.kind}"`}
+			tabIndex={0}
+		>
 			<div className="flex gap-1">
 				{((field: FormField) => {
 					switch (field.kind) {
@@ -39,7 +44,7 @@ function Field(props: {
 					}
 				})(props.field)}
 			</div>
-		</div>
+		</li>
 	);
 }
 

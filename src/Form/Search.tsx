@@ -10,11 +10,12 @@ function Search(props: { search: string; setQuery: Function }) {
 	}, [props.search]);
 
 	return (
-		<form action="" method="get">
+		<form action="" method="get" aria-label="Search Forms" tabIndex={0}>
 			<div className="mb-4 flex flex-row gap-2">
 				<div className="flex flex-row w-full">
 					<input
 						name="search"
+						aria-label="Search Term"
 						className="flex rounded-lg border-2 border-gray-200 p-2 text-center w-full"
 						onChange={(e) =>
 							props.setQuery({ search: e.target.value })
@@ -28,6 +29,7 @@ function Search(props: { search: string; setQuery: Function }) {
 				<div className="flex">
 					<button
 						className="bg-purple-500 hover:bg-purple-700 text-white rounded-lg px-4"
+						aria-label="Search"
 						type="submit"
 						title="search"
 					>

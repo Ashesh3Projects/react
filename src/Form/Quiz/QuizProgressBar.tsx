@@ -2,9 +2,12 @@ import React from "react";
 
 function QuizProgress(props: { qIndex: number; totalFields: number }) {
 	return (
-		<div className="w-full bg-gray-200 rounded-full">
+		<div className="w-full bg-gray-200 rounded-full" tabIndex={0}>
 			<div
 				className="bg-blue-600 text-sm font-medium text-blue-100 text-center p-0.5 leading-none rounded-l-lg"
+				aria-label={`Quiz Progress: ${Math.round(
+					((props.qIndex + 1) / props.totalFields) * 100
+				)}%`}
 				style={{
 					width: `${Math.round(
 						((props.qIndex + 1) / props.totalFields) * 100

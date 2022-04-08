@@ -1,9 +1,9 @@
 import { Link } from "raviger";
-import React, { Fragment } from "react";
+import React from "react";
 
 function Footer() {
 	return (
-		<Fragment>
+		<footer>
 			<Link
 				href="/forms/-1"
 				className="cursor-pointer flex bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg justify-center w-full"
@@ -18,7 +18,7 @@ function Footer() {
 			>
 				Back
 			</Link>
-		</Fragment>
+		</footer>
 	);
 }
 

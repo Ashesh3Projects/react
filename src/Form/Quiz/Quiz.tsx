@@ -137,9 +137,16 @@ function Quiz(props: { formID: number }) {
 				display: inline;
 				{"}"}
 			</style>
-			<div className="p-6 mx-auto bg-white shadow-lg rounded-xl min-w-[500px] items-center">
+			<div
+				className="p-6 mx-auto bg-white shadow-lg rounded-xl min-w-[500px] items-center"
+				tabIndex={-1}
+				aria-label="Quiz Section"
+			>
 				<NavBar />
-				<h1 className="pb-2 w-full text-center text-xl items-center font-semibold">
+				<h1
+					className="pb-2 w-full text-center text-xl items-center font-semibold"
+					tabIndex={0}
+				>
 					{formData?.title} Quiz
 				</h1>
 				{quizProgress && (
@@ -151,7 +158,7 @@ function Quiz(props: { formID: number }) {
 				<div className="py-2"></div>
 				{currentQuestion && quizProgress && (
 					<div className="w-full items-center center">
-						<h2 className="px-3 font-semibold pb-6">
+						<h2 className="px-3 font-semibold pb-6" tabIndex={0}>
 							Question {Number(qIndex) + 1} of{" "}
 							{quizProgress.length}
 						</h2>
@@ -180,10 +187,19 @@ function Quiz(props: { formID: number }) {
 				)}
 				{!currentQuestion && (
 					<>
-						<div className=" flex justify-center w-full items-center center py-6">
+						<div
+							className=" flex justify-center w-full items-center center py-6"
+							aria-label="No Questions"
+							tabIndex={0}
+						>
 							No Questions
 						</div>
-						<Link href={`/forms`} className="w-full">
+						<Link
+							href={`/forms`}
+							className="w-full"
+							aria-label="Back Button"
+							tabIndex={0}
+						>
 							<button className="text-center block cursor-pointer w-full bg-slate-600 hover:bg-slate-800 text-white font-bold py-2 px-4 rounded-lg">
 								Back
 							</button>

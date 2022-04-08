@@ -5,7 +5,7 @@ import { NAV_BAR } from "./globals";
 
 export default function NavBar() {
 	return (
-		<div className="flex px-6 py-2 content-center w-full gap-8 center justify-center">
+		<nav className="flex px-6 py-2 content-center w-full gap-8 center justify-center">
 			{NAV_BAR.map((item) => {
 				return (
 					<div
@@ -22,6 +22,6 @@ export default function NavBar() {
 					</div>
 				);
 			})}
-		</div>
+		</nav>
 	);
 }

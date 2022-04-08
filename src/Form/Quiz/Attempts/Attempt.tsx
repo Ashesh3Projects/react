@@ -23,8 +23,15 @@ function Attempt(props: { formID: number; attemptID: number }) {
 	});
 
 	return (
-		<div className="p-6 mx-auto bg-white shadow-lg rounded-xl min-w-[500px] items-center">
-			<h1 className="py-2 px-4 pb-2 w-full text-center text-xl items-center font-semibold border-gray-200 rounded-lg">
+		<div
+			className="p-6 mx-auto bg-white shadow-lg rounded-xl min-w-[500px] items-center"
+			tabIndex={0}
+			aria-label="Attempt Details"
+		>
+			<h1
+				className="py-2 px-4 pb-2 w-full text-center text-xl items-center font-semibold border-gray-200 rounded-lg"
+				tabIndex={0}
+			>
 				{attemptData?.form.title} Attempt
 			</h1>
 			<style>
@@ -38,7 +45,10 @@ function Attempt(props: { formID: number; attemptID: number }) {
 				display: inline;
 				{"}"}
 			</style>
-			<div className="flex flex-row justify-between w-100 items-center p-6">
+			<div
+				className="flex flex-row justify-between w-100 items-center p-6"
+				tabIndex={0}
+			>
 				<span className="text-sm text-gray-500">
 					ID: {props.attemptID}
 				</span>
@@ -67,6 +77,7 @@ function Attempt(props: { formID: number; attemptID: number }) {
 				<div className="p-2"></div>
 				<Link
 					href={`/quiz/${props.formID}/results`}
+					aria-label="Close Attempt View"
 					className="text-center block cursor-pointer w-full bg-slate-600 hover:bg-slate-800 text-white font-bold py-2 px-4 rounded-lg"
 				>
 					Close

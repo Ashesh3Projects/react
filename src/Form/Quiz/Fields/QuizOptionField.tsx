@@ -16,9 +16,14 @@ export default function QuizOptionField(props: {
 				switch (field.kind) {
 					case "DROPDOWN":
 						return (
-							<div className="relative inline-block w-full text-gray-700">
+							<div
+								className="relative inline-block w-full text-gray-700"
+								tabIndex={0}
+								aria-label="Quiz Option Field"
+							>
 								<select
 									required={true}
+									aria-label="Answer Dropdown"
 									id={field.label}
 									disabled={props.disabled || false}
 									value={props.selectedValue || undefined}
@@ -55,9 +60,12 @@ export default function QuizOptionField(props: {
 										<div
 											className="form-check mr-4 mb-2"
 											key={option.id}
+											tabIndex={0}
+											aria-label="Quiz Option Field"
 										>
 											<input
 												required={true}
+												aria-label="Answer Radio"
 												className="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
 												type="radio"
 												disabled={

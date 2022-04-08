@@ -5,7 +5,12 @@ import QuizOptionField from "../Fields/QuizOptionField";
 
 function AttemptField(props: { field?: FormField; answer: Answer }) {
 	return (
-		<div key={props.field?.id} className="pb-2">
+		<div
+			key={props.field?.id}
+			className="pb-2"
+			tabIndex={0}
+			aria-label={`Attempt Field: ${props.field?.label} of type ${props.field?.kind}`}
+		>
 			<label
 				htmlFor={props.field?.label}
 				className="pb-2 font-semibold text-sm"

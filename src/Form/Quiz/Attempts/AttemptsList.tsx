@@ -29,21 +29,36 @@ function AttemptList(props: { formID: number }) {
 	return (
 		<div className="px-6 py-4 mx-auto bg-white shadow-lg rounded-xl min-w-[600px] items-center">
 			<NavBar />
-			<div className="w-full items-center center text-center">
-				<h1 className="pb-2 w-full text-center text-xl items-center border-b-[1px] border-gray-600 border-dashed">
+			<div
+				className="w-full items-center center text-center"
+				tabIndex={0}
+				aria-label="Attempts List"
+			>
+				<h1
+					className="pb-2 w-full text-center text-xl items-center border-b-[1px] border-gray-600 border-dashed"
+					tabIndex={0}
+				>
 					Attempts for <strong>{formData?.title}</strong>
 				</h1>
 				<div className="py-2"></div>
-				{(attemptsData || []).map((attempt: FormSubmission) => (
-					<AttemptItem
-						key={attempt.id}
-						formID={props.formID}
-						attemptID={attempt.id}
-						attemptDate={attempt.created_date}
-					/>
-				))}
+				<ul>
+					{(attemptsData || []).map((attempt: FormSubmission) => (
+						<AttemptItem
+							key={attempt.id}
+							formID={props.formID}
+							attemptID={attempt.id}
+							attemptDate={attempt.created_date}
+						/>
+					))}
+				</ul>
 				{(attemptsData || []).length === 0 && (
-					<h2 className="p-2 font-semibold">No Attempts</h2>
+					<h2
+						className="p-2 font-semibold"
+						tabIndex={0}
+						aria-label="No Attempts"
+					>
+						No Attempts
+					</h2>
 				)}
 				<div className="pb-2"></div>
 				<AttemptFooter />

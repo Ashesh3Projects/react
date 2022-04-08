@@ -261,9 +261,14 @@ function Form(props: { formID: number }) {
 	});
 
 	return (
-		<div className="p-6 mx-auto bg-white shadow-lg rounded-xl items-center">
+		<div
+			className="p-6 mx-auto bg-white shadow-lg rounded-xl items-center"
+			tabIndex={-1}
+			aria-label="Form Editor"
+		>
 			<input
 				type="text"
+				aria-label="Form Title"
 				defaultValue={formData?.title}
 				className="py-2 px-4 pb-2 w-full text-center text-xl items-center font-semibold border-2 border-gray-200 rounded-lg"
 				onChange={(e) => {
@@ -276,81 +281,86 @@ function Form(props: { formID: number }) {
 			/>
 			<div className="pb-4"></div>
 			<div className="px-4 w-full">
-				{fieldData?.map((field) => (
-					<Field
-						field={field}
-						removeField={(field_id: number) => {
-							api.forms.fields.delete(formData.id, field_id);
-							fieldDataDispacher({
-								type: "removeField",
-								field_id,
-							});
-						}}
-						setFieldValue={(
-							field_id: number,
-							fieldValue: string
-						) => {
-							api.forms.fields.update(formData.id, field_id, {
-								label: fieldValue,
-							});
-							fieldDataDispacher({
-								type: "setFieldValue",
-								fieldId: field_id,
-								fieldValue: fieldValue,
-							});
-						}}
-						key={field.id}
-						addNewOption={(fieldId: number) => {
-							let new_option = {
-								id: Number(new Date()),
-								label: "",
-								selected: false,
-							};
-							let field_options =
-								fieldData[fieldId]?.options || [];
-							api.forms.fields.update(formData.id, fieldId, {
-								options: [...field_options, new_option],
-							});
-							fieldDataDispacher({
-								type: "addNewOption",
-								fieldId: fieldId,
-								optionID: new_option.id,
-								optionLabel: new_option.label,
-							});
-						}}
-						removeOption={(field_id: number, option_id: number) => {
-							api.forms.fields.update(formData.id, field_id, {
-								options: field.options?.filter(
-									(option) => option.id !== option_id
-								),
-							});
-							fieldDataDispacher({
-								type: "removeOption",
-								fieldId: field_id,
-								optionId: option_id,
-							});
-						}}
-						setOptionValue={(
-							fieldId: number,
-							optionId: number,
-							label: string
-						) => {
-							api.forms.fields.update(formData.id, fieldId, {
-								options: field.options?.map((option) =>
-									option.id === optionId
-										? { ...option, label: label }
-										: option
-								),
-							});
-							fieldDataDispacher({
-								type: "setOptionLabel",
-								fieldId,
-								optionId,
-								label,
-							});
-						}}
-					/>
-				))}
+				<ul aria-label="Form Labels Section" tabIndex={0}>
+					{fieldData?.map((field) => (
+						<Field
+							field={field}
+							removeField={(field_id: number) => {
+								api.forms.fields.delete(formData.id, field_id);
+								fieldDataDispacher({
+									type: "removeField",
+									field_id,
+								});
+							}}
+							setFieldValue={(
+								field_id: number,
+								fieldValue: string
+							) => {
+								api.forms.fields.update(formData.id, field_id, {
+									label: fieldValue,
+								});
+								fieldDataDispacher({
+									type: "setFieldValue",
+									fieldId: field_id,
+									fieldValue: fieldValue,
+								});
+							}}
+							key={field.id}
+							addNewOption={(fieldId: number) => {
+								let new_option = {
+									id: Number(new Date()),
+									label: "",
+									selected: false,
+								};
+								let field_options =
+									fieldData[fieldId]?.options || [];
+								api.forms.fields.update(formData.id, fieldId, {
+									options: [...field_options, new_option],
+								});
+								fieldDataDispacher({
+									type: "addNewOption",
+									fieldId: fieldId,
+									optionID: new_option.id,
+									optionLabel: new_option.label,
+								});
+							}}
+							removeOption={(
+								field_id: number,
+								option_id: number
+							) => {
+								api.forms.fields.update(formData.id, field_id, {
+									options: field.options?.filter(
+										(option) => option.id !== option_id
+									),
+								});
+								fieldDataDispacher({
+									type: "removeOption",
+									fieldId: field_id,
+									optionId: option_id,
+								});
+							}}
+							setOptionValue={(
+								fieldId: number,
+								optionId: number,
+								label: string
+							) => {
+								api.forms.fields.update(formData.id, fieldId, {
+									options: field.options?.map((option) =>
+										option.id === optionId
+											? { ...option, label: label }
+											: option
+									),
+								});
+								fieldDataDispacher({
+									type: "setOptionLabel",
+									fieldId,
+									optionId,
+									label,
+								});
+							}}
+						/>
+					))}
+				</ul>
 				<AddField
 					addField={() => {
 						api.forms.fields
@@ -381,6 +391,7 @@ function Form(props: { formID: number }) {
 				<div className="p-2"></div>
 				<input
 					type="button"
+					aria-label="Save Form"
 					onClick={(e) => {
 						(e.target as HTMLInputElement).value = "Saved!";
 						setTimeout(() => {
@@ -394,6 +405,7 @@ function Form(props: { formID: number }) {
 				<input
 					type="button"
 					value="Clear"
+					aria-label="Clear Form"
 					onClick={(e) => {
 						fieldDataDispacher({ type: "clearAllFields" });
 						(e.target as HTMLInputElement).value = "Cleared!";
@@ -405,6 +417,7 @@ function Form(props: { formID: number }) {
 				/>
 				<div className="p-1"></div>
 				<Link
+					aria-label="Close Editor"
 					href="/forms"
 					className="text-center block cursor-pointer w-full bg-slate-600 hover:bg-slate-800 text-white font-bold py-2 px-4 rounded-lg"
 				>

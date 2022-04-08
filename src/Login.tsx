@@ -109,6 +109,8 @@ function Login() {
 
 					<button
 						ref={submitBtnRef}
+						aria-label="Submit Login Details"
+						tabIndex={0}
 						type="submit"
 						className="w-full py-3 mt-10 bg-blue-600 rounded-lg font-medium text-white uppercase focus:outline-none hover:bg-blue-700 hover:shadow-none"
 					>
