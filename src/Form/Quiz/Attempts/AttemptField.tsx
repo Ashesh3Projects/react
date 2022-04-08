@@ -1,4 +1,5 @@
 import React from "react";
+import { Rating } from "react-simple-star-rating";
 import { Answer, FormField } from "../../../types";
 import QuizInputField from "../Fields/QuizInputField";
 import QuizOptionField from "../Fields/QuizOptionField";
@@ -49,6 +50,22 @@ function AttemptField(props: { field?: FormField; answer: Answer }) {
 									setFieldValueOption={() => {}}
 									selectedValue={props.answer.value || ""}
 								/>
+							);
+						case "GENERIC":
+							return (
+								<div
+									aria-label={`Rated ${
+										Number(props.answer.value) / 20
+									} out of 5`}
+									tabIndex={0}
+								>
+									<Rating
+										ratingValue={
+											Number(props.answer.value) || 0
+										}
+										readonly={true}
+									/>
+								</div>
 							);
 					}
 				})(props.field)}

@@ -22,6 +22,7 @@ function Field(props: {
 				{((field: FormField) => {
 					switch (field.kind) {
 						case "TEXT":
+						case "GENERIC":
 							return (
 								<TextField
 									field={field}

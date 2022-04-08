@@ -33,6 +33,7 @@ function AddField(props: {
 				<option value="TEXT">Text</option>
 				<option value="DROPDOWN">Dropdown</option>
 				<option value="RADIO">Radio</option>
+				<option value="GENERIC">Rating</option>
 			</select>
 			<input
 				type="button"

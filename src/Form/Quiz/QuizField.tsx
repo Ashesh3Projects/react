@@ -3,6 +3,7 @@ import React from "react";
 import { FormField } from "../../types";
 import QuizOptionField from "./Fields/QuizOptionField";
 import QuizInputField from "./Fields/QuizInputField";
+import { Rating } from "react-simple-star-rating";
 
 function QuizField(props: {
 	formID: number;
@@ -85,6 +86,36 @@ function QuizField(props: {
 										props.setFieldValueOption
 									}
 								/>
+							);
+						case "GENERIC":
+							return (
+								<div
+									className="flex flex-row w-full"
+									tabIndex={0}
+									aria-label={`Rating Input: Current value ${
+										(Number(
+											props.quizProgress?.find(
+												(f) => f.id === field.id
+											)?.value
+										) || 0) / 20
+									} out of 5`}
+								>
+									<Rating
+										aria-label="Rating Input"
+										className="w-full"
+										allowHalfIcon={true}
+										onClick={(rate) => {
+											props.setFieldValue(field.id, rate);
+										}}
+										ratingValue={
+											Number(
+												props.quizProgress?.find(
+													(f) => f.id === field.id
+												)?.value
+											) || 0
+										}
+									/>
+								</div>
 							);
 					}
 				})(props.field)}
