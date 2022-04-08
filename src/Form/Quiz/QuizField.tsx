@@ -98,7 +98,40 @@ function QuizField(props: {
 												(f) => f.id === field.id
 											)?.value
 										) || 0) / 20
-									} out of 5`}
+									} out of 5 
+									Use arrow keys to change rating`}
+									onKeyDown={(
+										e: React.KeyboardEvent<HTMLDivElement>
+									) => {
+										switch (e.key) {
+											case "ArrowLeft":
+												e.preventDefault();
+												props.setFieldValue(
+													field.id,
+													(Number(
+														props.quizProgress?.find(
+															(f) =>
+																f.id ===
+																field.id
+														)?.value
+													) || 0) - 10
+												);
+												break;
+											case "ArrowRight":
+												e.preventDefault();
+												props.setFieldValue(
+													field.id,
+													(Number(
+														props.quizProgress?.find(
+															(f) =>
+																f.id ===
+																field.id
+														)?.value
+													) || 0) + 10
+												);
+												break;
+										}
+									}}
 								>
 									<Rating
 										aria-label="Rating Input"
