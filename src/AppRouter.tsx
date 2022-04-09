@@ -1,15 +1,18 @@
+import React, { Suspense } from "react";
 import { useRoutes } from "raviger";
-import About from "./About";
-import Container from "./Container";
-import Form from "./Form/Form";
-import FormList from "./Form/List";
-import Attempt from "./Form/Quiz/Attempts/Attempt";
-import AttemptList from "./Form/Quiz/Attempts/AttemptsList";
-import Quiz from "./Form/Quiz/Quiz";
-import Home from "./Home";
-import Login from "./Login";
 import { hasToken } from "./api";
-import NotFound from "./NotFound";
+const About = React.lazy(() => import("./About"));
+const Container = React.lazy(() => import("./Container"));
+const Form = React.lazy(() => import("./Form/Form"));
+const FormList = React.lazy(() => import("./Form/List"));
+const Attempt = React.lazy(() => import("./Form/Quiz/Attempts/Attempt"));
+const AttemptList = React.lazy(
+	() => import("./Form/Quiz/Attempts/AttemptsList")
+);
+const Quiz = React.lazy(() => import("./Form/Quiz/Quiz"));
+const Home = React.lazy(() => import("./Home"));
+const Login = React.lazy(() => import("./Login"));
+const NotFound = React.lazy(() => import("./NotFound"));
 
 const publicRoutes = {
 	"/": () => <Home />,
@@ -42,5 +45,9 @@ export default function AppRouter() {
 	const routes = hasToken()
 		? { ...publicRoutes, ...authRoutes }
 		: publicRoutes;
-	return <Container>{useRoutes(routes) || <NotFound></NotFound>}</Container>;
+	return (
+		<Suspense fallback={<div>Loading...</div>}>
+			<Container>{useRoutes(routes) || <NotFound></NotFound>}</Container>
+		</Suspense>
+	);
 }
