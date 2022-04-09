@@ -19,11 +19,19 @@ export default function QuizOptionField(props: {
 							<div
 								className="relative inline-block w-full text-gray-700"
 								tabIndex={0}
-								aria-label="Quiz Option Field"
+								aria-label={`Quiz Option Field ${
+									props.selectedValue
+										? `selected value, ${props.selectedValue}`
+										: ""
+								}`}
 							>
 								<select
 									required={true}
-									aria-label="Answer Dropdown"
+									aria-label={`Dropdown ${field.label} ${
+										props.selectedValue
+											? `selected value, ${props.selectedValue}`
+											: ""
+									}`}
 									id={field.label}
 									disabled={props.disabled || false}
 									value={props.selectedValue || undefined}
@@ -35,7 +43,11 @@ export default function QuizOptionField(props: {
 										);
 									}}
 								>
-									<option key="-1" value="-">
+									<option
+										key="-1"
+										value="-"
+										aria-label="Empty Choice"
+									>
 										-
 									</option>
 
@@ -44,6 +56,7 @@ export default function QuizOptionField(props: {
 											<option
 												key={index}
 												value={option.label}
+												aria-label={`Choice ${option.label}`}
 											>
 												{option.label}
 											</option>
@@ -61,9 +74,19 @@ export default function QuizOptionField(props: {
 											className="form-check mr-4 mb-2"
 											key={option.id}
 											tabIndex={0}
-											aria-label="Quiz Option Field"
+											aria-label={`Option ${
+												option.label
+											}, ${
+												props.selectedValue ===
+												option.label
+													? "Selected"
+													: "Not Selected"
+											}`}
 										>
 											<input
+												aria-labelledby={String(
+													option.id
+												)}
 												required={true}
 												aria-label="Answer Radio"
 												className="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
@@ -76,7 +99,6 @@ export default function QuizOptionField(props: {
 													option.label
 												}
 												name={option.label}
-												id={String(option.id)}
 												onChange={(_) => {
 													props.setFieldValue(
 														field.id,
@@ -85,6 +107,7 @@ export default function QuizOptionField(props: {
 												}}
 											/>
 											<label
+												id={String(option.id)}
 												className="form-check-label inline-block text-gray-800"
 												htmlFor={String(option.id)}
 											>
